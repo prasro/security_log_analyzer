@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Security Log Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1, h2 { color: #333; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        img { max-width: 100%; height: auto; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <h1>Security Incident Report</h1>
+    <h2>Summary</h2>
+    <p>Total Incidents Detected: {{ total_incidents }}</p>
+
+    <h2>Charts</h2>
+    {% if chart_distribution %}
+        <h3>Attack Distribution</h3>
+        <img src="data:image/png;base64,{{ chart_distribution }}">
+    {% endif %}
+
+    {% if chart_per_ip %}
+        <h3>Attacks per Source IP</h3>
+        <img src="data:image/png;base64,{{ chart_per_ip }}">
+    {% endif %}
+
+    {% if chart_timeline %}
+        <h3>Attack Timeline</h3>
+        <img src="data:image/png;base64,{{ chart_timeline }}">
+    {% endif %}
+
+    {% if chart_heatmap %}
+        <h3>Attack Frequency Heatmap</h3>
+        <img src="data:image/png;base64,{{ chart_heatmap }}">
+    {% endif %}
+
+    <h2>Incident Details</h2>
+    <table>
+        <tr>
+            <th>Type</th>
+            <th>Source IP</th>
+            <th>Timestamp</th>
+            <th>Message</th>
+        </tr>
+        {% for inc in incidents %}
+        <tr>
+            <td>{{ inc.type }}</td>
+            <td>{{ inc.source_ip }}</td>
+            <td>{{ inc.timestamp or "-" }}</td>
+            <td>{{ inc.message or "-" }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
